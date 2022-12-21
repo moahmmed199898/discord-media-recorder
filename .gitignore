@@ -24,3 +24,6 @@ node_modules/
 
 # Recorder output directory media files
 output/
+
+# js files 
+dist/
