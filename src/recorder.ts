@@ -73,18 +73,24 @@ class Recorder {
                 }
 
                 const maxRecordLength = Number.parseInt(process.env.MAX_Record_Length_Seconds || "0") * 1000 || Number.MAX_VALUE
+                const coolDown = Number.parseInt(process.env.Cooldown_Between_Recordings_Seconds || "0") * 1000 || Number.MAX_VALUE
                 // Record the speaking user
                 if(packet.d.speaking && user) {
                     this.userStream = this.voiceReceiver?.createStream(user, { mode: 'pcm', end: 'manual' });
                     this.userStream?.on('data', (chunk: any) => {
                         const now = Date.now()
-                        if(now - this.lastRecordTimeStamp > maxRecordLength) {
+                        const diff = now - this.lastRecordTimeStamp
+
+                        if( diff > maxRecordLength) {
                             this.audioWriter?.end()
-                            this.audioWriter = this.createFileWriter()
-                            this.lastRecordTimeStamp = Date.now()
+                            this.audioWriter = undefined
+                            if(diff > coolDown) {
+                                this.audioWriter = this.createFileWriter()
+                                this.lastRecordTimeStamp = Date.now()
+                            }
                         }
 
-                        this.audioWriter?.write(chunk)
+                        if(this.audioWriter) this.audioWriter.write(chunk)
                     }
 
                     );
