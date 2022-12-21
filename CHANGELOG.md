@@ -1,5 +1,9 @@
-# 1.0.0
+# 1.1.0
 ## Release phase
+
+### 1.1.0
+Using typescript to avoid bugs
+Adding docker image and compose support
 
 ### 1.0.0 🥳
 
