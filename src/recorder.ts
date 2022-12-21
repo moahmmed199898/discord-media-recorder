@@ -1,14 +1,15 @@
 import moment from 'moment';
-import wav from 'wav';
+import {FileWriter} from 'wav';
 import {Client, VoiceChannel, VoiceConnection, VoiceReceiver} from "discord.js"
+import { Readable } from 'stream'
 
 class Recorder {
     client:Client|undefined;
     voiceChannel: VoiceChannel| undefined
     voiceConnection: VoiceConnection| undefined
     voiceReceiver: VoiceReceiver | undefined
-    userStream: any
-    audioWriter: any
+    userStream: Readable | undefined
+    audioWriter: FileWriter | undefined
 
     constructor(client:Client) {
         this.client          = client
@@ -58,13 +59,13 @@ class Recorder {
 
                 if(!this.audioWriter) {
                     console.log("Creating new media recording file in: " + `${process.env.MEDIA_OUTPUT_FOLDER}/${moment().format("YYYY-MM-DD_HHmmss")}-media-recording.wav`)
-                    this.audioWriter = new wav.FileWriter(`${process.env.MEDIA_OUTPUT_FOLDER}/${moment().format("YYYY-MM-DD_HHmmss")}-media-recording.wav`);
+                    this.audioWriter = new FileWriter(`${process.env.MEDIA_OUTPUT_FOLDER}/${moment().format("YYYY-MM-DD_HHmmss")}-media-recording.wav`);
                 }
 
                 // Record the speaking user
                 if(packet.d.speaking && user) {
                     this.userStream = this.voiceReceiver?.createStream(user, { mode: 'pcm', end: 'manual' });
-                    this.userStream.on('data', (chunk: any) => this.audioWriter.write(chunk));
+                    this.userStream?.on('data', (chunk: any) => this.audioWriter?.write(chunk));
                 }
             } catch (e) {
                 return;
