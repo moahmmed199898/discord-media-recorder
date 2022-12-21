@@ -2,14 +2,6 @@ version: '3'
 services:
   bot: 
     build: .
-    environment:
-      - BOT_TOKEN=
-      - NODE_ENV='development'
-      - BOT_PREFIX=
-      - MAX_Record_Length_Seconds = 3
-      - Cooldown_Between_Recordings_Seconds = 600
-      - channels = 2
-      - sampleRate = 44100
 
     volumes:
       - ./output:/app/output/

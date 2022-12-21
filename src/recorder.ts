@@ -74,6 +74,7 @@ class Recorder {
 
                 const maxRecordLength = Number.parseInt(process.env.MAX_Record_Length_Seconds || "0") * 1000 || Number.MAX_VALUE
                 const coolDown = Number.parseInt(process.env.Cooldown_Between_Recordings_Seconds || "0") * 1000 || Number.MAX_VALUE
+
                 // Record the speaking user
                 if(packet.d.speaking && user) {
                     this.userStream = this.voiceReceiver?.createStream(user, { mode: 'pcm', end: 'manual' });

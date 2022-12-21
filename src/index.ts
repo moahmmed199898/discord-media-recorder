@@ -47,7 +47,6 @@ class BOT {
       if(!message.member?.voice.channel) return
 
 
-      console.log("heyyyyy")
       console.log(message.content)
 
       switch (command) {

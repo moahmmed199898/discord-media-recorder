@@ -16,9 +16,6 @@ node_modules/
 # Idea files
 .idea
 
-# Operational dotenv environment variables file
-.env
-
 # VSCode potential configuration files
 .vscode
 
