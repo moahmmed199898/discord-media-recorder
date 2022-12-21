@@ -6,6 +6,5 @@ services:
       - BOT_TOKEN=
       - NODE_ENV='development'
       - BOT_PREFIX=
-      - RECORDER_MASTERS=
     volumes:
       - ./output:/app/output/
