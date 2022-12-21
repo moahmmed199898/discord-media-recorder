@@ -48,9 +48,7 @@
     "typescript": "^4.9.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src",
-    "dev": "nodemon --exec babel-node index.js",
     "start": "tsc && node dist/index.js"
   }
 }
