@@ -1,21 +1,20 @@
 import dotenv from 'dotenv';
-import wav from 'wav';
-import R from 'ramda';
-import Discord from 'discord.js';
-
-import logger from "./src/logger";
-import Recorder from './src/recorder';
+import Discord, {Client, Message} from 'discord.js';
+import Recorder from './recorder.js';
 
 dotenv.config();
 
 class BOT {
+  client: Client
+  recorder: Recorder
+
   constructor() {
     this.client = new Discord.Client();
     this.recorder = new Recorder(this.client);
 
     this.client.once('ready', () => {
-      logger.info(`---- ${process.env.NODE_ENV.toUpperCase()} ENVIRONMENT ----`)
-      logger.info(`Booting Discord Recorder BOT...`)
+      console.log(`---- ${process.env.NODE_ENV?.toUpperCase()} ENVIRONMENT ----`)
+      console.log(`Booting Discord Recorder BOT...`)
     });
 
     this.registerEvents();
@@ -33,17 +32,23 @@ class BOT {
     });
   }
 
-  handleMessage = (message) => {
+  handleMessage = (message:Message) => {
+
     // Checks if bot was mentioned
-    if (message.mentions.has(this.client.user.id)) {
+    if (this.client.user && message.mentions.has(this.client.user.id)) {
       const msg_split = message.content.split(' ');
 
       // If bot was mentioned without a command, then skip.
       if (!msg_split[1]) return;
 
-      const suffix = R.join(' ', R.slice(2, msg_split.length, msg_split));
+      // const suffix = R.join(' ', R.slice(2, msg_split.length, msg_split));
       let command = msg_split[1].toLowerCase();
       if (command[0] === process.env.BOT_PREFIX) command = command.slice(1);
+      if(!message.member?.voice.channel) return
+
+
+      console.log("heyyyyy")
+      console.log(message.content)
 
       switch (command) {
           case "join":
